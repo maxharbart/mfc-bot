@@ -10,7 +10,7 @@ from telegram.ext import (
     MessageHandler,
     Filters,
     ConversationHandler,
-    CallbackContext,
+    CallbackContext
 )
 # Configure writing to google sheets
 
@@ -22,7 +22,8 @@ scopes = [
 credentials = ServiceAccountCredentials.from_json_keyfile_name("mfc-to-sheets-7e344e318d1d.json", scopes) #access the json key  
 file = gspread.authorize(credentials) # authenticate the JSON key with gspread
 sheet = file.open("MFC Anketa")  #open sheet
-sheet = sheet.sheet1  
+sheet = sheet.sheet1 
+line = 1 
 
 
 
@@ -33,18 +34,15 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
+# Configure steps of questionnaire
+
 
 FIRSTQ, SECONDQ, THIRDQ, FOURTHQ, FIFTHQ, SIXTHQ, SEVENTHQ, EIGHTQ, NINETHQ, TENHQ, ELEVENTHQ, TWELVTHQ, THIRTEENTHQ, CANCEL = range(14)
-
-line = 1
-
 
 def start(update: Update, context: CallbackContext) -> int:
     """Starts the conversation."""
     reply_keyboard = [['Да', 'Нет', 'Частично']]
     update.message.reply_text(
-        'Привет!\n'
-        'Позади первый месяц работы, мы хотим знать, как у тебя дела!\n'
         'Пройди, пожалуйста, опрос ниже.\n\n'
         '1. Твои ожидания от работы оправдались?',
         reply_markup=ReplyKeyboardMarkup(
@@ -139,7 +137,7 @@ def seventhq(update: Update, context: CallbackContext) -> int:
     reply_keyboard = [['1', '2', '3', '4', '5']]
 
     update.message.reply_text(
-        '7. Оцени работу службы безопасности?',
+        '7. Оцени работу службы безопасности',
         reply_markup=ReplyKeyboardMarkup(
             reply_keyboard, resize_keyboard=True, input_field_placeholder='Седьмой вопрос'
         ),
